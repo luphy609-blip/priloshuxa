@@ -3,84 +3,57 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#292929">
+<meta name="theme-color" content="#F2F2F7">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <link rel="manifest" href="./manifest.webmanifest">
 <link rel="icon" href="./icon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="./icon.svg">
 <title>Приложуха — MVP</title>
 <style>
-*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#202020;font-family:Arial,Helvetica,sans-serif;color:#fff}
-body{display:flex;justify-content:center}button,input{font:inherit}
-button{color:inherit;border:0;cursor:pointer}
-.app{width:min(100vw,430px);min-height:100vh;padding:28px 20px 22px;background:#303030;position:relative;overflow:hidden}
-@media(min-width:700px){body{align-items:center;padding:24px}.app{min-height:760px;border-radius:18px;box-shadow:0 20px 70px #0008}}
-.screen{display:none;min-height:calc(100vh - 50px);padding-bottom:92px}.screen.active{display:block}
-.card,.tasks-card{background:#747474;border-radius:31px;padding:12px 20px 20px;margin-bottom:11px}
-.title{font-weight:900;font-size:29px;line-height:1;margin:0 0 17px;letter-spacing:-1px}
-.task-row{display:flex;align-items:center;gap:7px;min-height:41px;font-size:17px;font-weight:800}
-.bullet{font-size:18px;width:9px}.task-text{flex:1}
-.grid{display:grid;grid-template-columns:1fr 1.18fr;gap:11px}
-.card{padding:15px 11px 12px;min-height:360px;display:flex;flex-direction:column}
-.card h2{margin:0 0 10px;font-size:24px;line-height:.95;font-weight:900}
-.goal{margin:0 0 7px;font-weight:900;font-size:17px;line-height:1.1}
-.goal-money{font-size:11px;font-weight:800;margin-bottom:5px}
-.progress{height:13px;background:#222;border-radius:20px;position:relative;margin:5px 0 17px;overflow:hidden}
-.progress-fill{height:100%;border-radius:20px;background:linear-gradient(90deg,#22ee00,#ffe000);width:0}
-.labels{display:flex;justify-content:space-between;font-size:8px;font-weight:700;margin-top:-12px;margin-bottom:12px}
-.add-btn{margin-top:auto;width:100%;height:45px;border-radius:24px;background:#999;font-size:12px;font-weight:900}
-.analytics{overflow:hidden}.chart{height:82px;width:100%;margin:0 0 8px;border:1px solid #999}
-.chart svg{width:100%;height:100%}.ops{font-size:15px;font-weight:900;line-height:1.18;overflow:auto;max-height:170px}
-.op{margin:0 0 11px}.minus{color:#ff7777}.plus{color:#70e980}
-.bottom{position:absolute;left:20px;right:20px;bottom:22px;height:62px;border-radius:34px;background:#4e4e4e;display:flex;align-items:center;justify-content:space-around;border:1px solid #777}
-.nav{width:48px;height:48px;border-radius:50%;background:transparent;display:grid;place-items:center}.nav svg{width:29px;height:29px;stroke:#aaa;stroke-width:1.4;fill:none}.nav.active{background:#5d5d5d}
-.second .tasks-card{padding-top:12px}.second .tasks-card .title{text-align:center}
-.second .task-row{min-height:59px}.task-actions{display:flex;gap:5px}
-.action{width:39px;height:39px;border-radius:50%;display:grid;place-items:center;background:#666;border:1px solid #888;font-size:19px}
-.delete{background:#765f60}.done{background:#5d8062}.edit{background:#817b5c}
-.second .main-add{width:100%;height:47px;border-radius:24px;background:#999;font-size:20px;font-weight:900}
-.hint{text-align:center;color:#aaa;font-size:11px;font-weight:700;margin-top:10px}
-.modal-bg{position:fixed;inset:0;background:#0009;display:none;align-items:flex-end;justify-content:center;z-index:20}.modal-bg.show{display:flex}
-.modal{width:min(430px,100vw);background:#3c3c3c;border-radius:28px 28px 0 0;padding:22px 20px 30px}
-.modal h3{margin:0 0 15px;font-size:23px}.field{margin:9px 0}.field label{display:block;font-size:12px;font-weight:800;color:#bbb;margin-bottom:5px}
-.field input{width:100%;border:1px solid #777;background:#252525;color:#fff;border-radius:13px;padding:12px;outline:none}
-.modal-actions{display:flex;gap:9px;margin-top:16px}.modal-actions button{flex:1;height:45px;border-radius:23px;font-weight:900}.cancel{background:#666}.save{background:#888}
-.type-buttons{display:flex;gap:8px}.type-buttons button{flex:1;height:43px;border-radius:22px;background:#555;font-weight:900}.type-buttons .selected.minus-type{background:#7b4747}.type-buttons .selected.plus-type{background:#477b50}
-.toast{position:fixed;left:50%;bottom:98px;transform:translateX(-50%) translateY(20px);background:#111d;color:#fff;padding:10px 16px;border-radius:20px;font-size:13px;font-weight:700;opacity:0;pointer-events:none;transition:.2s;z-index:30;white-space:nowrap}.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+:root{color-scheme:light dark;--blue:#007aff;--green:#34c759;--orange:#ff9500;--red:#ff3b30;--purple:#af52de;--ink:#000;--secondary:rgba(60,60,67,.6);--tertiary:rgba(60,60,67,.3);--bg:#f2f2f7;--surface:#fff;--surface-2:#f2f2f7;--fill:rgba(118,118,128,.12);--separator:rgba(60,60,67,.18);--shadow:0 2px 8px rgba(0,0,0,.05);--glass:rgba(246,246,248,.88);--blur:blur(30px) saturate(180%);--spring:cubic-bezier(.2,.8,.2,1)}
+@media(prefers-color-scheme:dark){:root{--blue:#0a84ff;--green:#30d158;--orange:#ff9f0a;--red:#ff453a;--purple:#bf5af2;--ink:#fff;--secondary:rgba(235,235,245,.6);--tertiary:rgba(235,235,245,.3);--bg:#000;--surface:#1c1c1e;--surface-2:#2c2c2e;--fill:rgba(118,118,128,.24);--separator:rgba(84,84,88,.55);--shadow:0 2px 8px rgba(0,0,0,.28);--glass:rgba(22,22,24,.84)}}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:var(--bg);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",sans-serif;color:var(--ink)}body{display:flex;justify-content:center}button,input{font:inherit}button{color:inherit;border:0;cursor:pointer;-webkit-tap-highlight-color:transparent}.app{width:min(100vw,480px);min-height:100vh;padding:calc(18px + env(safe-area-inset-top)) 20px calc(104px + env(safe-area-inset-bottom));background:var(--bg);position:relative;overflow:hidden}@media(min-width:700px){body{align-items:center;padding:24px}.app{min-height:820px;border:1px solid var(--separator);border-radius:30px;box-shadow:0 18px 54px rgba(0,0,0,.12)}}
+.screen{display:none;min-height:calc(100vh - 50px);padding-bottom:32px}.screen.active{display:block}.topbar{display:flex;align-items:center;gap:11px;margin:2px 0 28px}.brand-mark{width:42px;height:42px;border-radius:14px;background:var(--blue);display:grid;place-items:center;color:#fff;box-shadow:0 4px 12px color-mix(in srgb,var(--blue) 25%,transparent)}.brand-mark svg{width:24px;height:24px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}.brand-name{font-size:15px;line-height:18px;font-weight:700;letter-spacing:-.2px}.brand-caption{font-size:12px;line-height:16px;color:var(--secondary)}.profile{margin-left:auto;width:42px;height:42px;border-radius:50%;background:var(--surface);color:var(--blue);font-size:16px;font-weight:700;border:1px solid var(--separator)}.section-heading{display:flex;align-items:flex-end;justify-content:space-between;margin:0 2px 20px}.eyebrow{margin:0 0 3px;font-size:13px;line-height:18px;color:var(--secondary);text-transform:capitalize}.page-title{margin:0;font-size:34px;line-height:41px;font-weight:400;letter-spacing:.2px}.header-action{width:44px;height:44px;border-radius:50%;background:var(--surface);color:var(--blue);font-size:22px}
+.card,.tasks-card{background:var(--surface);border:1px solid var(--separator);border-radius:20px;padding:16px;margin-bottom:14px;box-shadow:var(--shadow)}.tasks-card{padding:18px 16px 12px}.card-title-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}.section-icon{width:34px;height:34px;border-radius:11px;background:color-mix(in srgb,var(--blue) 12%,var(--surface));display:grid;place-items:center;color:var(--blue);font-size:17px}.goal-icon{background:color-mix(in srgb,var(--orange) 14%,var(--surface));color:var(--orange)}.analytics-icon{background:color-mix(in srgb,var(--purple) 14%,var(--surface));color:var(--purple)}.card h2{margin:0;font-size:20px;line-height:25px;font-weight:650;letter-spacing:-.3px}.tasks-heading{display:flex;align-items:center;justify-content:space-between;margin:0 3px 10px}.title{font-weight:700;font-size:20px;line-height:25px;margin:0;letter-spacing:-.3px}.task-count{font-size:13px;color:var(--secondary)}.task-row{display:flex;align-items:center;gap:11px;min-height:48px;font-size:16px;line-height:22px;font-weight:500;border-top:1px solid var(--separator)}.bullet{width:10px;height:10px;border:2px solid var(--blue);border-radius:50%;flex:0 0 auto}.task-text{flex:1}.grid{display:grid;grid-template-columns:1fr;gap:0}.card{min-height:0;display:flex;flex-direction:column}.goal{margin:8px 0 2px;font-weight:600;font-size:16px;line-height:22px}.goal-money{font-size:13px;color:var(--secondary);margin-bottom:7px}.progress{height:8px;background:var(--fill);border-radius:99px;position:relative;margin:3px 0 12px;overflow:hidden}.progress-fill{height:100%;border-radius:99px;background:var(--orange);width:0}.labels{display:flex;justify-content:space-between;font-size:12px;color:var(--secondary);margin:0 0 12px}.add-btn,.main-add{width:100%;min-height:48px;border-radius:13px;background:var(--blue);color:#fff;font-size:16px;font-weight:600;transition:transform .2s var(--spring),opacity .2s}.add-btn{margin-top:12px}.add-btn:active,.main-add:active,.action:active{transform:scale(.97)}.analytics{overflow:hidden}.chart{height:108px;width:100%;margin:4px 0 12px;border-radius:12px;background:var(--surface-2);overflow:hidden}.chart svg{width:100%;height:100%}.chart polyline{stroke:var(--purple)}.ops{font-size:15px;line-height:20px;overflow:auto;max-height:170px}.op{margin:0 0 10px;color:var(--ink)}.minus{color:var(--red)}.plus{color:var(--green)}
+.bottom{position:fixed;z-index:10;left:50%;transform:translateX(-50%);bottom:calc(10px + env(safe-area-inset-bottom));width:min(calc(100vw - 28px),452px);min-height:68px;padding:7px 5px calc(7px + env(safe-area-inset-bottom));border:1px solid var(--separator);border-radius:20px;background:var(--glass);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);display:flex;align-items:center;justify-content:space-around;box-shadow:0 8px 28px rgba(0,0,0,.1)}.nav{min-width:52px;min-height:50px;padding:3px 5px;border-radius:14px;background:transparent;color:var(--secondary);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}.nav svg{width:23px;height:23px;stroke:currentColor;stroke-width:1.8;fill:none}.nav-label{font-size:10px;line-height:13px;font-weight:500}.nav.active{color:var(--blue);background:color-mix(in srgb,var(--blue) 10%,transparent)}
+.second .tasks-card{padding-top:18px}.second .tasks-card .title{text-align:left}.second .task-row{min-height:58px}.task-actions{display:flex;gap:4px}.action{width:44px;height:44px;flex:0 0 auto;border-radius:13px;display:grid;place-items:center;background:var(--fill);color:var(--ink);font-size:19px;transition:transform .2s var(--spring)}.delete{color:var(--red)}.done{color:var(--green)}.edit{color:var(--orange)}.second .main-add{margin-top:2px}.hint{text-align:center;color:var(--secondary);font-size:13px;margin-top:12px}.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.3);display:none;align-items:flex-end;justify-content:center;z-index:20;backdrop-filter:blur(3px)}.modal-bg.show{display:flex}.modal{width:min(480px,100vw);background:var(--surface);border:1px solid var(--separator);border-radius:20px 20px 0 0;padding:12px 20px calc(26px + env(safe-area-inset-bottom));box-shadow:0 -12px 32px rgba(0,0,0,.14)}.modal:before{content:"";display:block;width:36px;height:5px;background:var(--fill);border-radius:99px;margin:0 auto 18px}.modal h3{margin:0 0 16px;font-size:22px;line-height:28px}.field{margin:12px 0}.field label{display:block;font-size:13px;color:var(--secondary);margin-bottom:6px}.field input{width:100%;min-height:48px;border:1px solid transparent;background:var(--fill);color:var(--ink);border-radius:11px;padding:12px;outline:none}.field input:focus{border:2px solid var(--blue)}.modal-actions{display:flex;gap:10px;margin-top:18px}.modal-actions button{flex:1;min-height:48px;border-radius:13px;font-weight:600}.cancel{background:var(--fill);color:var(--blue)}.save{background:var(--blue);color:#fff}.type-buttons{display:flex;gap:8px}.type-buttons button{flex:1;min-height:44px;border-radius:11px;background:var(--fill);font-weight:600}.type-buttons .selected.minus-type{background:color-mix(in srgb,var(--red) 16%,var(--surface));color:var(--red)}.type-buttons .selected.plus-type{background:color-mix(in srgb,var(--green) 16%,var(--surface));color:var(--green)}.toast{position:fixed;left:50%;bottom:calc(92px + env(safe-area-inset-bottom));transform:translateX(-50%) translateY(12px);background:var(--ink);color:var(--bg);padding:11px 16px;border-radius:14px;font-size:14px;font-weight:600;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:30;white-space:nowrap}.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+:focus-visible{outline:3px solid var(--blue);outline-offset:2px}@media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}}
 </style>
 </head>
 <body>
 <div class="app">
 <section id="home" class="screen active">
-  <div class="tasks-card"><h1 class="title">задачи</h1><div id="homeTasks"></div></div>
+  <header class="topbar"><div class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></svg></div><div><div class="brand-name">Приложуха</div><div class="brand-caption">твой день под контролем</div></div><button class="profile" aria-label="Профиль">Л</button></header>
+  <div class="section-heading"><div><p class="eyebrow" id="todayDate"></p><h1 class="page-title">Сегодня</h1></div><button class="header-action" aria-label="Дополнительные действия" onclick="toast('Настройки — следующий экран')">···</button></div>
+  <div class="tasks-card"><div class="tasks-heading"><h2 class="title">Задачи</h2><span class="task-count" id="taskCount"></span></div><div id="homeTasks"></div></div>
   <div class="grid">
-    <div class="card"><h2>Цели</h2><div id="goals"></div><button class="add-btn" onclick="openGoal()">добавить цель</button></div>
-    <div class="card analytics"><h2>Аналитика</h2>
-      <div class="chart"><svg viewBox="0 0 240 82" preserveAspectRatio="none"><polyline points="0,62 22,42 45,50 67,27 89,70 112,43 134,49 156,20 179,30 201,12 224,35 240,22" fill="none" stroke="#bbb" stroke-width="1"/></svg></div>
+    <div class="card"><div class="card-title-row"><span class="section-icon goal-icon">◎</span><h2>Цели</h2></div><div id="goals"></div><button class="add-btn" onclick="openGoal()">＋ Добавить цель</button></div>
+    <div class="card analytics"><div class="card-title-row"><span class="section-icon analytics-icon">↗</span><h2>Аналитика</h2></div>
+      <div class="chart"><svg viewBox="0 0 240 82" preserveAspectRatio="none"><polyline points="0,62 22,42 45,50 67,27 89,70 112,43 134,49 156,20 179,30 201,12 224,35 240,22" fill="none" stroke-width="2"/></svg></div>
       <div class="ops" id="operations"></div>
-      <button class="add-btn" onclick="openOperation()">добавить операцию</button>
+      <button class="add-btn" onclick="openOperation()">＋ Добавить операцию</button>
     </div>
   </div>
   <nav class="bottom">
-    <button class="nav active" onclick="show('home')"><svg viewBox="0 0 32 32"><path d="M5 14 16 5l11 9v12H18v-8h-4v8H5z"/></svg></button>
-    <button class="nav" onclick="show('tasks')"><svg viewBox="0 0 32 32"><path d="M6 17l6 6L27 8"/><rect x="4" y="4" width="24" height="24" rx="4"/></svg></button>
-    <button class="nav" onclick="toast('Финансы — следующий экран')"><svg viewBox="0 0 32 32"><ellipse cx="16" cy="7" rx="10" ry="4"/><path d="M6 7v17c0 2 20 2 20 0V7M6 15c0 2 20 2 20 0"/></svg></button>
-    <button class="nav" onclick="toast('Аналитика — следующий экран')"><svg viewBox="0 0 32 32"><path d="M6 26V6M6 26h21"/><path d="M8 21 13 16l4 3 8-10"/></svg></button>
-    <button class="nav" onclick="toast('Дневник — следующий экран')"><svg viewBox="0 0 32 32"><path d="M6 5h15l5 5v17H6zM21 5v6h5M10 16h12M10 21h12"/></svg></button>
+    <button class="nav active" aria-label="Главная" onclick="show('home')"><svg viewBox="0 0 32 32"><path d="M5 14 16 5l11 9v12H18v-8h-4v8H5z"/></svg><span class="nav-label">Главная</span></button>
+    <button class="nav" aria-label="Задачи" onclick="show('tasks')"><svg viewBox="0 0 32 32"><path d="M6 17l6 6L27 8"/><rect x="4" y="4" width="24" height="24" rx="4"/></svg><span class="nav-label">Задачи</span></button>
+    <button class="nav" aria-label="Финансы" onclick="toast('Финансы — следующий экран')"><svg viewBox="0 0 32 32"><ellipse cx="16" cy="7" rx="10" ry="4"/><path d="M6 7v17c0 2 20 2 20 0V7M6 15c0 2 20 2 20 0"/></svg><span class="nav-label">Финансы</span></button>
+    <button class="nav" aria-label="Статистика" onclick="toast('Аналитика — следующий экран')"><svg viewBox="0 0 32 32"><path d="M6 26V6M6 26h21"/><path d="M8 21 13 16l4 3 8-10"/></svg><span class="nav-label">Статистика</span></button>
+    <button class="nav" aria-label="Дневник" onclick="toast('Дневник — следующий экран')"><svg viewBox="0 0 32 32"><path d="M6 5h15l5 5v17H6zM21 5v6h5M10 16h12M10 21h12"/></svg><span class="nav-label">Дневник</span></button>
   </nav>
 </section>
 
 <section id="tasks" class="screen second">
   <div class="tasks-card"><h1 class="title">задачи</h1><div id="taskList"></div></div>
-  <button class="main-add" onclick="addTask()">добавить задачу</button>
+  <button class="main-add" onclick="addTask()">＋ Добавить задачу</button>
   <div class="hint">Нажми ✓, чтобы отметить задачу выполненной</div>
   <nav class="bottom">
-    <button class="nav" onclick="show('home')"><svg viewBox="0 0 32 32"><path d="M5 14 16 5l11 9v12H18v-8h-4v8H5z"/></svg></button>
-    <button class="nav active"><svg viewBox="0 0 32 32"><path d="M6 17l6 6L27 8"/><rect x="4" y="4" width="24" height="24" rx="4"/></svg></button>
-    <button class="nav" onclick="toast('Финансы — следующий экран')"><svg viewBox="0 0 32 32"><ellipse cx="16" cy="7" rx="10" ry="4"/><path d="M6 7v17c0 2 20 2 20 0V7M6 15c0 2 20 2 20 0"/></svg></button>
-    <button class="nav" onclick="toast('Аналитика — следующий экран')"><svg viewBox="0 0 32 32"><path d="M6 26V6M6 26h21"/><path d="M8 21 13 16l4 3 8-10"/></svg></button>
-    <button class="nav" onclick="toast('Дневник — следующий экран')"><svg viewBox="0 0 32 32"><path d="M6 5h15l5 5v17H6zM21 5v6h5M10 16h12M10 21h12"/></svg></button>
+    <button class="nav" aria-label="Главная" onclick="show('home')"><svg viewBox="0 0 32 32"><path d="M5 14 16 5l11 9v12H18v-8h-4v8H5z"/></svg><span class="nav-label">Главная</span></button>
+    <button class="nav active" aria-label="Задачи"><svg viewBox="0 0 32 32"><path d="M6 17l6 6L27 8"/><rect x="4" y="4" width="24" height="24" rx="4"/></svg><span class="nav-label">Задачи</span></button>
+    <button class="nav" aria-label="Финансы" onclick="toast('Финансы — следующий экран')"><svg viewBox="0 0 32 32"><ellipse cx="16" cy="7" rx="10" ry="4"/><path d="M6 7v17c0 2 20 2 20 0V7M6 15c0 2 20 2 20 0"/></svg><span class="nav-label">Финансы</span></button>
+    <button class="nav" aria-label="Статистика" onclick="toast('Аналитика — следующий экран')"><svg viewBox="0 0 32 32"><path d="M6 26V6M6 26h21"/><path d="M8 21 13 16l4 3 8-10"/></svg><span class="nav-label">Статистика</span></button>
+    <button class="nav" aria-label="Дневник" onclick="toast('Дневник — следующий экран')"><svg viewBox="0 0 32 32"><path d="M6 5h15l5 5v17H6zM21 5v6h5M10 16h12M10 21h12"/></svg><span class="nav-label">Дневник</span></button>
   </nav>
 </section>
 </div>
@@ -93,14 +66,15 @@ const defaults={tasks:['сделать домашку','сходить в зал
 let data=JSON.parse(localStorage.getItem('prilozhuhaData')||'null')||defaults;
 function save(){localStorage.setItem('prilozhuhaData',JSON.stringify(data));render()}
 function render(){
-  homeTasks.innerHTML=data.tasks.slice(0,3).map(t=>`<div class="task-row"><span class="bullet">•</span><span class="task-text">${esc(t)}</span></div>`).join('');
+  homeTasks.innerHTML=data.tasks.slice(0,3).map(t=>`<div class="task-row"><span class="bullet"></span><span class="task-text">${esc(typeof t==='string'?t:t.text)}</span></div>`).join('');
+  taskCount.textContent=data.tasks.length?`${data.tasks.length} ${data.tasks.length===1?'задача':'задачи'}`:'Пока пусто';
   taskList.innerHTML=data.tasks.map((t,i)=>`<div class="task-row" data-i="${i}"><span class="bullet">•</span><span class="task-text ${t.done?'done-text':''}" style="${t.done?'text-decoration:line-through;opacity:.45':''}">${esc(t.text||t)}</span><span class="task-actions"><button class="action delete" onclick="removeTask(${i})">×</button><button class="action done" onclick="doneTask(${i})">✓</button><button class="action edit" onclick="editTask(${i})">⌕</button></span></div>`).join('');
   goals.innerHTML=data.goals.map((g,i)=>{let pct=Math.min(100,g.saved/g.price*100);return `<div class="goal">• ${esc(g.name)}</div><div class="goal-money">${fmt(g.saved)} / ${fmt(g.price)} ₽</div><div class="progress"><div class="progress-fill" style="width:${pct}%"></div></div>`}).join('');
   operations.innerHTML=data.operations.map(o=>`<p class="op ${o.type==='minus'?'minus':'plus'}">${o.type==='minus'?'−':'+'}${fmt(o.amount)} ₽<br>${esc(o.name)}</p>`).join('')||'<p class="op" style="color:#bbb">пока нет операций</p>';
 }
 function esc(s){return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
 function fmt(n){return Number(n).toLocaleString('ru-RU')}
-function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active')}
+function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('.bottom').forEach(nav=>nav.querySelectorAll('.nav').forEach((button,index)=>button.classList.toggle('active',index===(id==='home'?0:1))))}
 function openGoal(){
  modalContent.innerHTML=`<h3>Новая цель</h3><div class="field"><label>Название</label><input id="gname" placeholder="Например, объектив"></div><div class="field"><label>Цена, ₽</label><input id="gprice" type="number" placeholder="20000"></div><div class="field"><label>Уже собрано, ₽</label><input id="gsaved" type="number" placeholder="0"></div><div class="modal-actions"><button class="cancel" onclick="closeModal()">Отмена</button><button class="save" onclick="saveGoal()">Добавить</button></div>`;modal.classList.add('show');gname.focus()
 }
@@ -117,6 +91,7 @@ function doneTask(i){let t=data.tasks[i];if(typeof t==='string')data.tasks[i]={t
 function editTask(i){let t=data.tasks[i],old=typeof t==='string'?t:t.text;let n=prompt('Измени задачу:',old);if(n&&n.trim()){data.tasks[i]=typeof t==='string'?n.trim():{...t,text:n.trim()};save()}}
 function toast(t){const e=document.getElementById('toast');e.textContent=t;e.classList.add('show');clearTimeout(window.tt);window.tt=setTimeout(()=>e.classList.remove('show'),1800)}
 render();
+todayDate.textContent=new Intl.DateTimeFormat('ru-RU',{weekday:'long',day:'numeric',month:'long'}).format(new Date());
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch(() => {}));
 }
