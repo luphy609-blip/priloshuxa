@@ -3,8 +3,8 @@
   "short_name":"Приложуха",
   "start_url":"./",
   "display":"standalone",
-  "background_color":"#303030",
-  "theme_color":"#292929",
+  "background_color":"#F2F2F7",
+  "theme_color":"#F2F2F7",
   "lang":"ru",
   "icons":[
     {"src":"./icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}
