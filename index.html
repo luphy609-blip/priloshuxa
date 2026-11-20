@@ -46,6 +46,17 @@ html{scroll-behavior:smooth}body{-webkit-font-smoothing:antialiased}.app{padding
 @media(min-width:700px){body{padding:32px 0;align-items:flex-start}.app{min-height:800px;border-radius:32px;box-shadow:0 18px 64px rgba(30,35,65,.08)}.modal-bg{align-items:center}.modal{border-radius:26px;max-height:86dvh}.screen{min-height:650px}}
 @media(max-width:360px){.app{padding-left:14px;padding-right:14px}.card,.tasks-card{padding:16px}.task-main{display:block}.task-actions{justify-content:flex-end;margin-top:6px}.chart-balance{font-size:26px}.nav-label{font-size:9px}.modal{padding-left:18px;padding-right:18px}}
  .backup-button,.backup-import{display:flex;align-items:center;justify-content:center;width:100%;min-height:44px;margin-top:8px;border-radius:11px;background:var(--fill);color:var(--blue);font-size:14px;font-weight:600;cursor:pointer}.backup-import:focus-visible{outline:3px solid var(--blue)}
+/* Calm daily-planner palette and clearer interactive hierarchy. */
+:root{--blue:#315fb4;--ink:#1d2b3a;--secondary:#647486;--bg:#f5f6f4;--surface:#fff;--surface-2:#f4f6f5;--fill:#edf1f3;--separator:rgba(34,56,74,.11);--shadow:0 5px 24px rgba(36,55,73,.055);--glass:rgba(255,255,255,.94)}
+:root[data-theme="dark"]{--blue:#88b2ff;--ink:#f1f5f7;--secondary:#aab7c4;--bg:#111b23;--surface:#1b2832;--surface-2:#23313d;--fill:#293946;--separator:rgba(206,227,240,.13);--shadow:0 8px 28px rgba(0,0,0,.16);--glass:rgba(25,38,49,.95)}
+.app{background:var(--bg)}.brand-mark{background:#315fb4;box-shadow:0 6px 16px rgba(49,95,180,.19)}.page-title{font-weight:740}.eyebrow{font-weight:650;color:var(--blue)}.card,.tasks-card{border-color:var(--separator)}
+.card-title-row .section-icon{flex:0 0 auto}.section-icon{background:color-mix(in srgb,var(--blue) 10%,var(--surface));color:var(--blue)}.goal-icon{background:color-mix(in srgb,var(--orange) 13%,var(--surface));color:var(--orange)}.analytics-icon{background:color-mix(in srgb,var(--purple) 12%,var(--surface));color:var(--purple)}
+.main-add,.save{background:#315fb4;box-shadow:0 5px 14px rgba(49,95,180,.18)}.add-btn{background:color-mix(in srgb,var(--blue) 9%,var(--surface))}.progress-fill{background:var(--orange)}
+.finance-balance{background:#263e55;box-shadow:0 12px 28px rgba(25,48,67,.17)}.finance-balance:after{display:none}.balance-caption{color:#d9e6ef}.finance-action{border:1px solid var(--separator)}.chart-period.active{color:var(--blue)}
+.bottom{justify-content:space-evenly}.nav{max-width:118px}.nav.active{background:color-mix(in srgb,var(--blue) 11%,var(--surface))}.nav-label{font-size:11px}
+.header-action{font-size:21px}.goal-delete:hover,.action:hover,.calendar-nav button:hover{background:color-mix(in srgb,var(--blue) 9%,var(--surface))}.delete:hover,.goal-delete:hover{background:color-mix(in srgb,var(--red) 11%,var(--surface))}
+@media(hover:hover){.main-add:hover,.save:hover{filter:brightness(1.07)}.add-btn:hover,.nav:hover:not(.active),.backup-button:hover,.backup-import:hover{background:color-mix(in srgb,var(--blue) 13%,var(--surface))}}
+@media(max-width:360px){.nav-label{font-size:10px}}
 </style>
 </head>
 <body>
@@ -68,8 +79,6 @@ html{scroll-behavior:smooth}body{-webkit-font-smoothing:antialiased}.app{padding
     <button class="nav active" aria-label="Главная" onclick="show('home')"><svg viewBox="0 0 32 32"><path d="M5 14 16 5l11 9v12H18v-8h-4v8H5z"/></svg><span class="nav-label">Главная</span></button>
     <button class="nav" aria-label="Задачи" onclick="show('tasks')"><svg viewBox="0 0 32 32"><path d="M6 17l6 6L27 8"/><rect x="4" y="4" width="24" height="24" rx="4"/></svg><span class="nav-label">Задачи</span></button>
     <button class="nav" aria-label="Финансы" onclick="show('finance')"><svg viewBox="0 0 32 32"><ellipse cx="16" cy="7" rx="10" ry="4"/><path d="M6 7v17c0 2 20 2 20 0V7M6 15c0 2 20 2 20 0"/></svg><span class="nav-label">Финансы</span></button>
-    <button class="nav" aria-label="Статистика" onclick="toast('Аналитика — следующий экран')"><svg viewBox="0 0 32 32"><path d="M6 26V6M6 26h21"/><path d="M8 21 13 16l4 3 8-10"/></svg><span class="nav-label">Статистика</span></button>
-    <button class="nav" aria-label="Дневник" onclick="toast('Дневник — следующий экран')"><svg viewBox="0 0 32 32"><path d="M6 5h15l5 5v17H6zM21 5v6h5M10 16h12M10 21h12"/></svg><span class="nav-label">Дневник</span></button>
   </nav>
 </section>
 
@@ -82,8 +91,6 @@ html{scroll-behavior:smooth}body{-webkit-font-smoothing:antialiased}.app{padding
     <button class="nav" aria-label="Главная" onclick="show('home')"><svg viewBox="0 0 32 32"><path d="M5 14 16 5l11 9v12H18v-8h-4v8H5z"/></svg><span class="nav-label">Главная</span></button>
     <button class="nav active" aria-label="Задачи"><svg viewBox="0 0 32 32"><path d="M6 17l6 6L27 8"/><rect x="4" y="4" width="24" height="24" rx="4"/></svg><span class="nav-label">Задачи</span></button>
     <button class="nav" aria-label="Финансы" onclick="show('finance')"><svg viewBox="0 0 32 32"><ellipse cx="16" cy="7" rx="10" ry="4"/><path d="M6 7v17c0 2 20 2 20 0V7M6 15c0 2 20 2 20 0"/></svg><span class="nav-label">Финансы</span></button>
-    <button class="nav" aria-label="Статистика" onclick="toast('Аналитика — следующий экран')"><svg viewBox="0 0 32 32"><path d="M6 26V6M6 26h21"/><path d="M8 21 13 16l4 3 8-10"/></svg><span class="nav-label">Статистика</span></button>
-    <button class="nav" aria-label="Дневник" onclick="toast('Дневник — следующий экран')"><svg viewBox="0 0 32 32"><path d="M6 5h15l5 5v17H6zM21 5v6h5M10 16h12M10 21h12"/></svg><span class="nav-label">Дневник</span></button>
   </nav>
 </section>
 
@@ -97,8 +104,6 @@ html{scroll-behavior:smooth}body{-webkit-font-smoothing:antialiased}.app{padding
     <button class="nav" aria-label="Главная" onclick="show('home')"><svg viewBox="0 0 32 32"><path d="M5 14 16 5l11 9v12H18v-8h-4v8H5z"/></svg><span class="nav-label">Главная</span></button>
     <button class="nav" aria-label="Задачи" onclick="show('tasks')"><svg viewBox="0 0 32 32"><path d="M6 17l6 6L27 8"/><rect x="4" y="4" width="24" height="24" rx="4"/></svg><span class="nav-label">Задачи</span></button>
     <button class="nav active" aria-label="Финансы" onclick="show('finance')"><svg viewBox="0 0 32 32"><ellipse cx="16" cy="7" rx="10" ry="4"/><path d="M6 7v17c0 2 20 2 20 0V7M6 15c0 2 20 2 20 0"/></svg><span class="nav-label">Финансы</span></button>
-    <button class="nav" aria-label="Статистика" onclick="toast('Аналитика — следующий экран')"><svg viewBox="0 0 32 32"><path d="M6 26V6M6 26h21"/><path d="M8 21 13 16l4 3 8-10"/></svg><span class="nav-label">Статистика</span></button>
-    <button class="nav" aria-label="Дневник" onclick="toast('Дневник — следующий экран')"><svg viewBox="0 0 32 32"><path d="M6 5h15l5 5v17H6zM21 5v6h5M10 16h12M10 21h12"/></svg><span class="nav-label">Дневник</span></button>
   </nav>
 </section>
 </div>
@@ -217,8 +222,8 @@ function openProfile(){modalContent.innerHTML=`<h3>Настройки профи
 function saveProfile(){const nickname=document.getElementById('profileNickname').value.trim(),theme=document.querySelector('input[name="profileTheme"]:checked')?.value;if(!nickname||Array.from(nickname).length>32){toast('Укажи никнейм до 32 символов');return}if(!['light','dark'].includes(theme))return;const next={nickname,theme};try{localStorage.setItem('prilozhuhaProfile',JSON.stringify(next))}catch{toast('Не удалось сохранить настройки');return}profileSettings=next;applyProfile();closeModal();toast('Профиль сохранён')}
 function closeModal(){modal.classList.remove('show');modalContent.classList.remove('calendar-modal')}
 function taskText(task){return typeof task==='string'?task:String(task?.text||'Без названия')}
-function taskDone(task){return typeof task==='object'&&!!task.done}
-function taskSubtasks(task){return typeof task==='object'&&Array.isArray(task.subtasks)?task.subtasks:[]}
+function taskDone(task){return !!task&&typeof task==='object'&&!!task.done}
+function taskSubtasks(task){return task&&typeof task==='object'&&Array.isArray(task.subtasks)?task.subtasks:[]}
 function subtaskText(subtask){return typeof subtask==='string'?subtask:String(subtask?.text||'')}
 function subtaskDone(subtask){return typeof subtask==='object'&&!!subtask.done}
 function taskDue(task){if(typeof task==='string'||!task.dueDate)return null;const date=new Date(`${task.dueDate}T00:00:00`);if(Number.isNaN(date.getTime()))return null;const today=new Date();today.setHours(0,0,0,0);const diff=Math.round((date-today)/86400000),done=taskDone(task),label=diff===0?'Срок: сегодня':diff===1?'Срок: завтра':`Срок: ${new Intl.DateTimeFormat('ru-RU',{day:'numeric',month:'long'}).format(date)}`;return{label:diff<0&&!done?`Просрочена · ${new Intl.DateTimeFormat('ru-RU',{day:'numeric',month:'long'}).format(date)}`:label,overdue:diff<0&&!done}}
@@ -228,13 +233,14 @@ function addTask(){
 }
 function addTaskSubtaskField(value=''){const container=document.getElementById('newTaskSubtasks');if(!container)return;const row=document.createElement('div');row.className='subtask-field';const input=document.createElement('input');input.className='subtask-input';input.placeholder='Название подзадачи';input.value=value;input.setAttribute('aria-label','Название подзадачи');const remove=document.createElement('button');remove.type='button';remove.textContent='×';remove.setAttribute('aria-label','Удалить подзадачу');remove.onclick=()=>row.remove();row.append(input,remove);container.append(row);input.focus()}
 function saveTask(){const name=document.getElementById('newTaskName').value.trim(),dueDate=document.getElementById('newTaskDate').value,subtasks=[...document.querySelectorAll('#newTaskSubtasks .subtask-input')].map(input=>input.value.trim()).filter(Boolean).map(text=>({text,done:false}));if(!name){toast('Укажи название задачи');return}data.tasks.push({text:name,dueDate,subtasks,done:false});closeModal();save();toast('Задача добавлена')}
-function removeTask(i){data.tasks.splice(i,1);save();toast('Задача удалена')}
+function removeTask(i){const task=data.tasks[i];if(!task||!confirm(`Удалить задачу «${taskText(task)}»?`))return;data.tasks.splice(i,1);save();toast('Задача удалена')}
 function setTaskDone(task,done){task.done=done;task.completedAt=done?new Date().toISOString():''}
 function doneTask(i){const task=ensureTask(i),next=!task.done;if(task.subtasks.length)task.subtasks=task.subtasks.map(subtask=>({text:subtaskText(subtask),done:next}));setTaskDone(task,next);save();toast(next?'Задача выполнена':'Задача снова активна')}
 function toggleSubtask(i,j){const task=ensureTask(i),subtask=task.subtasks[j];task.subtasks[j]={text:subtaskText(subtask),done:!subtaskDone(subtask)};const complete=task.subtasks.length>0&&task.subtasks.every(subtaskDone);setTaskDone(task,complete);save();if(task.done)toast('Все подзадачи выполнены')}
 function addSubtask(i){ensureTask(i);modalContent.innerHTML=`<h3>Новая подзадача</h3><div class="field"><label for="newSubtaskName">Название</label><input id="newSubtaskName" placeholder="Например, прочитать параграф"></div><div class="modal-actions"><button class="cancel" onclick="closeModal()">Отмена</button><button class="save" onclick="saveSubtask(${i})">Добавить</button></div>`;modal.classList.add('show');document.getElementById('newSubtaskName').focus()}
 function saveSubtask(i){const name=document.getElementById('newSubtaskName').value.trim();if(!name){toast('Укажи название подзадачи');return}const task=ensureTask(i);task.subtasks.push({text:name,done:false});setTaskDone(task,false);closeModal();save();toast('Подзадача добавлена')}
-function editTask(i){const task=ensureTask(i),n=prompt('Измени задачу:',task.text);if(n&&n.trim()){task.text=n.trim();save()}}
+function editTask(i){const task=ensureTask(i);modalContent.innerHTML=`<h3>Изменить задачу</h3><div class="field"><label for="editTaskName">Название</label><input id="editTaskName" value="${esc(task.text)}"></div><div class="field"><label for="editTaskDate">Когда выполнить</label><input id="editTaskDate" type="date" value="${esc(task.dueDate||'')}"></div><div class="modal-actions"><button class="cancel" onclick="closeModal()">Отмена</button><button class="save" onclick="saveTaskEdit(${i})">Сохранить</button></div>`;modal.classList.add('show');document.getElementById('editTaskName').focus()}
+function saveTaskEdit(i){const task=ensureTask(i),name=document.getElementById('editTaskName').value.trim(),dueDate=document.getElementById('editTaskDate').value;if(!name){toast('Укажи название задачи');return}task.text=name;task.dueDate=dueDate;closeModal();save();toast('Задача обновлена')}
 let calendarMonth=new Date(new Date().getFullYear(),new Date().getMonth(),1),calendarSelected=localDateKey(new Date());
 function localDateKey(date){return `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}-${String(date.getDate()).padStart(2,'0')}`}
 function openCalendar(){calendarMonth=new Date(new Date().getFullYear(),new Date().getMonth(),1);calendarSelected=localDateKey(new Date());modalContent.classList.add('calendar-modal');modal.classList.add('show');renderCalendar()}
@@ -244,6 +250,8 @@ function changeCalendarMonth(amount){calendarMonth=new Date(calendarMonth.getFul
 function selectCalendarDay(dateKey){calendarSelected=dateKey;renderCalendar()}
 function calendarDayDetails(dateKey,label){const scheduled=data.tasks.filter(task=>typeof task!=='string'&&task.dueDate===dateKey),operations=data.operations.filter(operation=>operation.date&&localDateKey(new Date(operation.date))===dateKey);let html=`<h4>${label}</h4>`;if(!scheduled.length&&!operations.length)return html+'<div class="empty-state">На этот день ничего не запланировано и операций нет.</div>';if(scheduled.length){html+='<div class="calendar-item-meta">Задачи</div>';html+=scheduled.map(task=>{const done=taskDone(task),subs=taskSubtasks(task),subRows=subs.map(subtask=>`<div class="calendar-item-meta">${subtaskDone(subtask)?'✓':'○'} ${esc(subtaskText(subtask))} · ${subtaskDone(subtask)?'выполнено':dateKey<localDateKey(new Date())?'не выполнено':'запланировано'}</div>`).join('');return `<div class="calendar-item ${done?'done':'missed'}"><div class="calendar-item-title">${done?'✓':'○'} ${esc(taskText(task))}</div><div class="calendar-item-meta">${done?'Выполнено':dateKey<localDateKey(new Date())?'Не выполнено':'Запланировано'}</div>${subRows}</div>`}).join('')}if(operations.length){html+='<div class="calendar-item-meta" style="margin-top:10px">Операции</div>';html+=operations.map(operation=>`<div class="calendar-item"><div class="calendar-item-title">${esc(operation.icon||'')} ${esc(operation.name||'Операция')}</div><div class="calendar-item-meta">${operation.category?`${esc(operation.category)} · `:''}<span class="${operation.type==='minus'?'minus':'plus'}">${operation.type==='minus'?'Расход −':'Доход +'}${fmt(operation.amount)} ₽</span></div></div>`).join('')}return html}
 function toast(t){const e=document.getElementById('toast');e.textContent=t;e.classList.add('show');clearTimeout(window.tt);window.tt=setTimeout(()=>e.classList.remove('show'),1800)}
+modal.addEventListener('click',event=>{if(event.target===modal)closeModal()});
+document.addEventListener('keydown',event=>{if(event.key==='Escape'&&modal.classList.contains('show'))closeModal()});
 applyProfile();
 render();
 todayDate.textContent=new Intl.DateTimeFormat('ru-RU',{weekday:'long',day:'numeric',month:'long'}).format(new Date());
