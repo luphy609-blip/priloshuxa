@@ -10,10 +10,10 @@ function boot(systemDark=false){
  return {context,elements,meta};
 }
 let a=boot();a.elements.profileNickname.value='  Новый ник  ';a.context.themeChoice='dark';a.context.saveProfile();
-assert.equal(a.elements.profileName.textContent,'Новый ник');assert.equal(a.elements.profileButton.textContent,'Н');assert.equal(a.context.document.documentElement.dataset.theme,'dark');assert.equal(a.meta.content,'#000000');
+assert.equal(a.elements.profileName.textContent,'Новый ник');assert.equal(a.elements.profileButton.textContent,'Н');assert.equal(a.context.document.documentElement.dataset.theme,'dark');assert.equal(a.meta.content,'#10171e');
 let b=boot(false);b.context.applyProfile();assert.equal(b.context.profileSettings.nickname,'Новый ник');assert.equal(b.context.document.documentElement.dataset.theme,'dark');
 b.elements.profileNickname.value='   ';b.context.saveProfile();assert.equal(JSON.parse(storage.get('prilozhuhaProfile')).nickname,'Новый ник');
-b.elements.profileNickname.value='<img onerror="bad">';b.context.themeChoice='light';b.context.saveProfile();b.context.openProfile();assert(!b.context.modalContent.innerHTML.includes('<img'));assert(b.context.modalContent.innerHTML.includes('&lt;img'));assert.equal(b.meta.content,'#F2F2F7');
+b.elements.profileNickname.value='<img onerror="bad">';b.context.themeChoice='light';b.context.saveProfile();b.context.openProfile();assert(!b.context.modalContent.innerHTML.includes('<img'));assert(b.context.modalContent.innerHTML.includes('&lt;img'));assert.equal(b.meta.content,'#f3f5f7');
 let c=boot(true);assert.equal(c.context.profileSettings.theme,'light');assert.equal(storage.get('prilozhuhaData'),'existing app data');
 storage.set('prilozhuhaProfile','invalid json');assert.equal(boot(true).context.profileSettings.theme,'dark');
 console.log('PASS: script syntax, nickname, escaping, theme switching, reload persistence, empty name, corrupt settings, app data preserved');
