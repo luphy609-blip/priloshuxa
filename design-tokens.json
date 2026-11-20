@@ -1,0 +1,6 @@
+{
+  "light": {"accent":"#2563c7","text":"#172330","mutedText":"#586b7d","background":"#f3f5f7","surface":"#ffffff","surfaceSubtle":"#f7f8fa","fill":"#edf1f5"},
+  "dark": {"accent":"#8bb9ff","text":"#f4f7fa","mutedText":"#adbdcb","background":"#10171e","surface":"#1b2732","surfaceSubtle":"#23313e","fill":"#2b3b49"},
+  "radii": {"card":"22px","navigation":"23px","button":"14px"},
+  "touchTarget":"44px"
+}
