@@ -1,4 +1,4 @@
-const CACHE = 'prilozhuha-v4';
+const CACHE = 'prilozhuha-v5-glass';
 const FILES = ['./', './index.html', './manifest.webmanifest', './icon.svg'];
 
 self.addEventListener('install', event => {
