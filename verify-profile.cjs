@@ -4,7 +4,7 @@ scripts.forEach(script=>new vm.Script(script));
 const storage=new Map([['prilozhuhaData','existing app data']]);
 function boot(systemDark=false){
  const elements={profileName:{},profileButton:{},profileNickname:{value:''}},meta={};
- const context={matchMedia:()=>({matches:systemDark}),localStorage:{getItem:k=>storage.get(k)??null,setItem:(k,v)=>storage.set(k,v)},document:{documentElement:{dataset:{}},querySelector:s=>s.startsWith('meta')?meta:{value:context.themeChoice},getElementById:id=>elements[id]},modalContent:{innerHTML:''},modal:{classList:{add(){}}},closeModal(){},toast(message){context.message=message},themeChoice:'light'};
+ const context={matchMedia:()=>({matches:systemDark}),localStorage:{getItem:k=>storage.get(k)??null,setItem:(k,v)=>storage.set(k,v)},document:{documentElement:{dataset:{}},querySelector:s=>s.startsWith('meta')?meta:{value:context.themeChoice},getElementById:id=>elements[id]},modalContent:{innerHTML:''},modal:{classList:{add(){}}},openSheet(){},closeModal(){},toast(message){context.message=message},themeChoice:'light'};
  vm.createContext(context);vm.runInContext(scripts[0],context);
  vm.runInContext(scripts[1].split('\n').filter(l=>/^function (esc|profileInitial|applyProfile|openProfile|saveProfile)\(/.test(l)).join('\n'),context);
  return {context,elements,meta};
