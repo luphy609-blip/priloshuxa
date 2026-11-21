@@ -1,4 +1,4 @@
-const CACHE = 'prilozhuha-v9-home-tasks';
+const CACHE = 'prilozhuha-v10-calendar-icon';
 const FILES = ['./', './index.html', './manifest.webmanifest', './icon.svg'];
 
 self.addEventListener('install', event => {
