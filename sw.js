@@ -1,4 +1,4 @@
-const CACHE = 'prilozhuha-v7-keyboard';
+const CACHE = 'prilozhuha-v8-interface';
 const FILES = ['./', './index.html', './manifest.webmanifest', './icon.svg'];
 
 self.addEventListener('install', event => {

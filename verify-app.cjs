@@ -1,6 +1,8 @@
 const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict');
 const html=fs.readFileSync('index.html','utf8');
 const scripts=[...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].map(m=>m[1]);
+assert.match(html,/\.notes-list \.card\.empty-state\{[^}]*padding:20px 22px/);
+assert.match(html,/:root\[data-theme="glass"\] \.bottom \.nav\.active\{[^}]*box-shadow:none!important/);
 const ids=[...html.matchAll(/\bid="([^"]+)"/g)].map(m=>m[1]);
 const store=new Map();
 const makeElement=()=>{const classes=new Set();return {innerHTML:'',textContent:'',value:'',dataset:{},style:{},className:'',classList:{add(...names){names.forEach(name=>classes.add(name))},remove(...names){names.forEach(name=>classes.delete(name))},toggle(name,force){const on=force??!classes.has(name);on?classes.add(name):classes.delete(name);return on},contains(name){return classes.has(name)}},setAttribute(name,value){this[name]=value},querySelectorAll(){return[]},addEventListener(){},focus(){}}};
@@ -8,14 +10,14 @@ function boot(){
  const elements=Object.fromEntries(ids.map(id=>[id,makeElement()]));
  const meta=makeElement();
  const buttons=Array.from({length:5},(_,i)=>Object.assign(makeElement(),{offsetWidth:76,offsetLeft:6+i*78,getBoundingClientRect(){return {left:this.offsetLeft,width:this.offsetWidth}}}));buttons[0].classList.add('active');
- const drop=Object.assign(makeElement(),{offsetWidth:76}),navHandlers={},nav={querySelector:selector=>selector==='.nav-drop'?drop:buttons.find(button=>button.classList.contains('active')),querySelectorAll:()=>buttons,getBoundingClientRect:()=>({left:0,width:400}),addEventListener:(type,fn)=>{navHandlers[type]=fn},setPointerCapture(){}};
+ const drop=Object.assign(makeElement(),{offsetWidth:76}),navHandlers={},nav={classList:makeElement().classList,querySelector:selector=>selector==='.nav-drop'?drop:buttons.find(button=>button.classList.contains('active')),querySelectorAll:()=>buttons,getBoundingClientRect:()=>({left:0,width:400}),addEventListener:(type,fn)=>{navHandlers[type]=fn},setPointerCapture(){}};
  let pendingTimer;
  const context={matchMedia:()=>({matches:false}),localStorage:{getItem:k=>store.get(k)??null,setItem:(k,v)=>store.set(k,v)},document:{documentElement:{dataset:{}},querySelector:s=>s.startsWith('meta')?meta:s==='.bottom'?nav:null,querySelectorAll:s=>s==='.bottom .nav'?buttons:s==='.screen'?['home','tasks','finance','insights','notes'].map(id=>elements[id]):[],getElementById:id=>elements[id]??(elements[id]=makeElement()),addEventListener(){}},navigator:{},Intl,Date,Math,Number,Array,String,JSON,console,confirm:()=>true,setTimeout:fn=>(pendingTimer=fn,1),clearTimeout(){}};
  Object.assign(context,elements);context.window=context;context.addEventListener=()=>{};context.scrollTo=()=>{};
  vm.createContext(context);scripts.forEach(code=>vm.runInContext(code,context));
- return {c:context,e:elements,meta,buttons,drop,navHandlers,flushTimer:()=>pendingTimer?.()};
+ return {c:context,e:elements,meta,buttons,drop,nav,navHandlers,flushTimer:()=>pendingTimer?.()};
 }
-let {c,e,meta,buttons,drop,navHandlers,flushTimer}=boot();const data=vm.runInContext('data',c);
+let {c,e,meta,buttons,drop,nav,navHandlers,flushTimer}=boot();const data=vm.runInContext('data',c);
 let sheetFocuses=0;e.modalContent.focus=()=>{sheetFocuses++};
 for(const open of [()=>c.openGoal(),()=>c.openOperation(),()=>c.addTask(),()=>c.openNote()])open();
 assert.equal(sheetFocuses,4);assert.equal((html.match(/\.focus\(/g)||[]).length,2);
@@ -24,8 +26,8 @@ assert.match(e.notesList.innerHTML,/Заметок пока нет/);
 c.show('notes');assert.equal(e.notes.classList.contains('active'),true);assert.equal(buttons[4].classList.contains('active'),true);assert.equal(drop.style.transform,'translate3d(318px,0,0)');
 c.show('tasks');assert.equal(buttons[1].classList.contains('active'),true);assert.equal(drop.style.transform,'translate3d(84px,0,0)');
 c.show('home');navHandlers.pointerdown({button:0,pointerId:1,clientX:40,target:{closest:()=>buttons[0]}});
-navHandlers.pointermove({pointerId:1,clientX:350,cancelable:true,preventDefault(){}});assert.equal(drop.classList.contains('dragging'),true);
-navHandlers.pointerup({pointerId:1,clientX:350});assert.equal(buttons[4].classList.contains('active'),true);assert.equal(drop.classList.contains('dragging'),false);
+navHandlers.pointermove({pointerId:1,clientX:350,cancelable:true,preventDefault(){}});assert.equal(drop.classList.contains('dragging'),true);assert.equal(nav.classList.contains('dragging'),true);assert.equal(buttons[4].classList.contains('preview'),true);
+navHandlers.pointerup({pointerId:1,clientX:350});assert.equal(buttons[4].classList.contains('active'),true);assert.equal(drop.classList.contains('dragging'),false);assert.equal(nav.classList.contains('dragging'),false);assert.equal(buttons[4].classList.contains('preview'),false);
 c.openSheet();assert.equal(e.modal.classList.contains('show'),true);c.closeModal();assert.equal(e.modal.classList.contains('closing'),true);flushTimer();assert.equal(e.modal.classList.contains('show'),false);
 e.noteTitle={value:'Идея'};e.noteBody={value:'Снять видео'};c.noteTitle=e.noteTitle;c.noteBody=e.noteBody;
 c.saveNote(-1);assert.equal(data.notes.length,1);assert.match(e.notesList.innerHTML,/Снять видео/);
@@ -52,4 +54,4 @@ e.profileNickname={value:'Тест'};c.document.querySelector=s=>s.startsWith('m
 c.saveProfile();assert.equal(c.document.documentElement.dataset.theme,'glass');assert.equal(meta.content,'#DCE7F5');
 const persisted=boot();assert.equal(persisted.c.profileSettings.theme,'glass');assert.equal(vm.runInContext('data',persisted.c).operations.length,5);
 store.set('prilozhuhaData','invalid JSON');assert.doesNotThrow(()=>boot());
-console.log('PASS: app boots, animated tabs and sheet without input autofocus, tasks, goals, operations, chart periods, notes CRUD, glass persistence, invalid data recovery');
+console.log('PASS: app boots, notes empty state spacing, single glass highlight, drag preview, sheet without autofocus, and data flows');
