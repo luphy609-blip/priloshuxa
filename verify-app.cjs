@@ -3,6 +3,7 @@ const html=fs.readFileSync('index.html','utf8');
 const scripts=[...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].map(m=>m[1]);
 assert.match(html,/\.notes-list \.card\.empty-state\{[^}]*padding:20px 22px/);
 assert.match(html,/:root\[data-theme="glass"\] \.bottom \.nav\.active\{[^}]*box-shadow:none!important/);
+assert.match(html,/class="tasks-card home-task-card"[^>]*onclick="show\('tasks',true\)"/);
 const ids=[...html.matchAll(/\bid="([^"]+)"/g)].map(m=>m[1]);
 const store=new Map();
 const makeElement=()=>{const classes=new Set();return {innerHTML:'',textContent:'',value:'',dataset:{},style:{},className:'',classList:{add(...names){names.forEach(name=>classes.add(name))},remove(...names){names.forEach(name=>classes.delete(name))},toggle(name,force){const on=force??!classes.has(name);on?classes.add(name):classes.delete(name);return on},contains(name){return classes.has(name)}},setAttribute(name,value){this[name]=value},querySelectorAll(){return[]},addEventListener(){},focus(){}}};
@@ -12,12 +13,15 @@ function boot(){
  const buttons=Array.from({length:5},(_,i)=>Object.assign(makeElement(),{offsetWidth:76,offsetLeft:6+i*78,getBoundingClientRect(){return {left:this.offsetLeft,width:this.offsetWidth}}}));buttons[0].classList.add('active');
  const drop=Object.assign(makeElement(),{offsetWidth:76}),navHandlers={},nav={classList:makeElement().classList,querySelector:selector=>selector==='.nav-drop'?drop:buttons.find(button=>button.classList.contains('active')),querySelectorAll:()=>buttons,getBoundingClientRect:()=>({left:0,width:400}),addEventListener:(type,fn)=>{navHandlers[type]=fn},setPointerCapture(){}};
  let pendingTimer;
- const context={matchMedia:()=>({matches:false}),localStorage:{getItem:k=>store.get(k)??null,setItem:(k,v)=>store.set(k,v)},document:{documentElement:{dataset:{}},querySelector:s=>s.startsWith('meta')?meta:s==='.bottom'?nav:null,querySelectorAll:s=>s==='.bottom .nav'?buttons:s==='.screen'?['home','tasks','finance','insights','notes'].map(id=>elements[id]):[],getElementById:id=>elements[id]??(elements[id]=makeElement()),addEventListener(){}},navigator:{},Intl,Date,Math,Number,Array,String,JSON,console,confirm:()=>true,setTimeout:fn=>(pendingTimer=fn,1),clearTimeout(){}};
+ const context={matchMedia:()=>({matches:false}),localStorage:{getItem:k=>store.get(k)??null,setItem:(k,v)=>store.set(k,v)},document:{documentElement:{dataset:{}},querySelector:s=>s.startsWith('meta')?meta:s==='.bottom'?nav:null,querySelectorAll:s=>s==='.bottom .nav'?buttons:s==='.screen'?['home','tasks','finance','insights','notes'].map(id=>elements[id]):[],getElementById:id=>elements[id]??(elements[id]=makeElement()),addEventListener(){}},navigator:{},Intl,Date,Math,Number,Array,String,JSON,console,confirm:()=>true,setTimeout:fn=>(pendingTimer=fn,1),requestAnimationFrame:fn=>fn(),clearTimeout(){}};
  Object.assign(context,elements);context.window=context;context.addEventListener=()=>{};context.scrollTo=()=>{};
  vm.createContext(context);scripts.forEach(code=>vm.runInContext(code,context));
  return {c:context,e:elements,meta,buttons,drop,nav,navHandlers,flushTimer:()=>pendingTimer?.()};
 }
 let {c,e,meta,buttons,drop,nav,navHandlers,flushTimer}=boot();const data=vm.runInContext('data',c);
+assert.match(e.homeTasks.innerHTML,/class="task-toggle"[^>]*onclick="event\.stopPropagation\(\);doneTask\(0\)"/);
+c.doneTask(0);assert.equal(data.tasks[0].done,true);assert.match(e.homeTasks.innerHTML,/aria-pressed="true"/);c.doneTask(0);
+c.show('tasks',true);assert.equal(e.tasks.classList.contains('active'),true);assert.equal(e.tasks.classList.contains('instant-entry'),true);c.show('home');assert.equal(e.tasks.classList.contains('instant-entry'),false);
 let sheetFocuses=0;e.modalContent.focus=()=>{sheetFocuses++};
 for(const open of [()=>c.openGoal(),()=>c.openOperation(),()=>c.addTask(),()=>c.openNote()])open();
 assert.equal(sheetFocuses,4);assert.equal((html.match(/\.focus\(/g)||[]).length,2);
@@ -54,4 +58,4 @@ e.profileNickname={value:'Тест'};c.document.querySelector=s=>s.startsWith('m
 c.saveProfile();assert.equal(c.document.documentElement.dataset.theme,'glass');assert.equal(meta.content,'#DCE7F5');
 const persisted=boot();assert.equal(persisted.c.profileSettings.theme,'glass');assert.equal(vm.runInContext('data',persisted.c).operations.length,5);
 store.set('prilozhuhaData','invalid JSON');assert.doesNotThrow(()=>boot());
-console.log('PASS: app boots, notes empty state spacing, single glass highlight, drag preview, sheet without autofocus, and data flows');
+console.log('PASS: home task card opens tasks instantly, home checkbox toggles completion, navigation, sheets, and data flows');

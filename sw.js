@@ -1,4 +1,4 @@
-const CACHE = 'prilozhuha-v8-interface';
+const CACHE = 'prilozhuha-v9-home-tasks';
 const FILES = ['./', './index.html', './manifest.webmanifest', './icon.svg'];
 
 self.addEventListener('install', event => {
