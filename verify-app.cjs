@@ -16,6 +16,9 @@ function boot(){
  return {c:context,e:elements,meta,buttons,drop,navHandlers,flushTimer:()=>pendingTimer?.()};
 }
 let {c,e,meta,buttons,drop,navHandlers,flushTimer}=boot();const data=vm.runInContext('data',c);
+let sheetFocuses=0;e.modalContent.focus=()=>{sheetFocuses++};
+for(const open of [()=>c.openGoal(),()=>c.openOperation(),()=>c.addTask(),()=>c.openNote()])open();
+assert.equal(sheetFocuses,4);assert.equal((html.match(/\.focus\(/g)||[]).length,2);
 assert.equal(e.insightBalance.textContent,'0 ₽');
 assert.match(e.notesList.innerHTML,/Заметок пока нет/);
 c.show('notes');assert.equal(e.notes.classList.contains('active'),true);assert.equal(buttons[4].classList.contains('active'),true);assert.equal(drop.style.transform,'translate3d(318px,0,0)');
@@ -49,4 +52,4 @@ e.profileNickname={value:'Тест'};c.document.querySelector=s=>s.startsWith('m
 c.saveProfile();assert.equal(c.document.documentElement.dataset.theme,'glass');assert.equal(meta.content,'#DCE7F5');
 const persisted=boot();assert.equal(persisted.c.profileSettings.theme,'glass');assert.equal(vm.runInContext('data',persisted.c).operations.length,5);
 store.set('prilozhuhaData','invalid JSON');assert.doesNotThrow(()=>boot());
-console.log('PASS: app boots, animated tabs and sheet, tasks, goals, operations, chart periods, notes CRUD, glass persistence, invalid data recovery');
+console.log('PASS: app boots, animated tabs and sheet without input autofocus, tasks, goals, operations, chart periods, notes CRUD, glass persistence, invalid data recovery');
